@@ -12,7 +12,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const isRoot = useMatch({
     strict: false,
     select: (state) => state.id === rootRouteId,
-  });
+  }); 
 
   console.error('DefaultCatchBoundary Error:', error)
 
