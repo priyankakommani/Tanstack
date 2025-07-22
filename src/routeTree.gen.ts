@@ -12,6 +12,7 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteImport } from './routes/users'
+import { Route as CrazyOrbitRouteImport } from './routes/crazyOrbit'
 import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
@@ -26,6 +27,11 @@ const rootServerRouteImport = createServerRootRoute()
 const UsersRoute = UsersRouteImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrazyOrbitRoute = CrazyOrbitRouteImport.update({
+  id: '/crazyOrbit',
+  path: '/crazyOrbit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PathlessLayoutRoute = PathlessLayoutRouteImport.update({
@@ -72,12 +78,14 @@ const ApiUsersUserIdServerRoute = ApiUsersUserIdServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/crazyOrbit': typeof CrazyOrbitRoute
   '/users': typeof UsersRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/crazyOrbit': typeof CrazyOrbitRoute
   '/users': typeof UsersRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
+  '/crazyOrbit': typeof CrazyOrbitRoute
   '/users': typeof UsersRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
@@ -93,13 +102,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/users' | '/route-a' | '/route-b'
+  fullPaths: '/' | '/crazyOrbit' | '/users' | '/route-a' | '/route-b'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/users' | '/route-a' | '/route-b'
+  to: '/' | '/crazyOrbit' | '/users' | '/route-a' | '/route-b'
   id:
     | '__root__'
     | '/'
     | '/_pathlessLayout'
+    | '/crazyOrbit'
     | '/users'
     | '/_pathlessLayout/_nested-layout'
     | '/_pathlessLayout/_nested-layout/route-a'
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
+  CrazyOrbitRoute: typeof CrazyOrbitRoute
   UsersRoute: typeof UsersRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -147,6 +158,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crazyOrbit': {
+      id: '/crazyOrbit'
+      path: '/crazyOrbit'
+      fullPath: '/crazyOrbit'
+      preLoaderRoute: typeof CrazyOrbitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_pathlessLayout': {
@@ -257,6 +275,7 @@ const ApiUsersServerRouteWithChildren = ApiUsersServerRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
+  CrazyOrbitRoute: CrazyOrbitRoute,
   UsersRoute: UsersRoute,
 }
 export const routeTree = rootRouteImport
